@@ -49,68 +49,63 @@ export default function AgreementsScreen() {
     }
   };
 
-  const AgreementCard = ({ agreement }: { agreement: Agreement }) => (
-    <TouchableOpacity
-      style={styles.agreementCard}
-      onPress={() => router.push(`/agreement/${agreement.id}` as any)}
-    >
-      <View style={styles.cardHeader}>
-        <Text style={styles.cardTitle} numberOfLines={2}>
-          {agreement.title}
-        </Text>
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(agreement.status) }]}>
-          <Text style={styles.statusText}>
-            {getStatusIcon(agreement.status)} {agreement.status}
-          </Text>
-        </View>
-      </View>
-      
-      <View style={styles.cardContent}>
-        <View style={styles.cardRow}>
-          <MapPin size={16} color={Colors.gray.dark} />
-          <Text style={styles.cardInfo}>
-            {agreement.country} • {agreement.startDate.split('-')[0]}-{agreement.endDate.split('-')[0]}
-          </Text>
+  const AgreementCard = ({ agreement }: { agreement: Agreement }) => {
+    return (
+      <TouchableOpacity
+        style={styles.agreementCard}
+        onPress={() => router.push(`/agreement/${agreement.id}` as any)}
+        activeOpacity={0.8}
+      >
+        <View style={styles.cardHeader}>
+          <View style={styles.countryInfo}>
+            <Text style={styles.flagEmoji}>{agreement.flag}</Text>
+            <Text style={styles.countryName}>{agreement.country}</Text>
+          </View>
+          <View style={[styles.statusBadge, { backgroundColor: getStatusColor(agreement.status) }]}>
+            <Text style={styles.statusText}>{agreement.status}</Text>
+          </View>
         </View>
         
-        <View style={styles.cardRow}>
-          <FileText size={16} color={Colors.gray.dark} />
-          <Text style={styles.cardInfo}>{agreement.domain}</Text>
+        <Text style={styles.agreementTitle}>{agreement.title}</Text>
+        
+        <View style={styles.cardDetails}>
+          <View style={styles.detailItem}>
+            <FileText size={16} color={Colors.gray.dark} />
+            <Text style={styles.detailText}>{agreement.type}</Text>
+          </View>
+          <View style={styles.detailItem}>
+            <MapPin size={16} color={Colors.gray.dark} />
+            <Text style={styles.detailText}>{agreement.domain}</Text>
+          </View>
         </View>
         
-        <View style={styles.cardRow}>
-          <Calendar size={16} color={Colors.gray.dark} />
-          <Text style={styles.cardInfo}>
-            Signé le {new Date(agreement.signatureDate).toLocaleDateString('fr-FR')}
+        <View style={styles.cardFooter}>
+          <View style={styles.dateInfo}>
+            <Calendar size={14} color={Colors.gray.medium} />
+            <Text style={styles.dateText}>
+              {agreement.startDate} - {agreement.endDate}
+            </Text>
+          </View>
+          <Text style={styles.partnersCount}>
+            {agreement.partners.length} partenaire(s)
           </Text>
         </View>
-      </View>
-      
-      <View style={styles.cardFooter}>
-        <Text style={styles.partnersText}>
-          Partenaires: {agreement.partners.join(', ')}
-        </Text>
-        <TouchableOpacity style={styles.detailsButton}>
-          <Text style={styles.detailsButtonText}>Voir détails</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      {/* Search and Filter Bar */}
+      {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <View style={styles.searchInputContainer}>
-          <Search size={20} color={Colors.gray.dark} style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Rechercher un accord..."
-            placeholderTextColor={Colors.gray.dark}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
+        <Search size={20} color={Colors.gray.dark} style={styles.searchIcon} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Rechercher un accord..."
+          placeholderTextColor={Colors.gray.dark}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
         <TouchableOpacity 
           style={styles.filterButton}
           onPress={() => router.push('/filters' as any)}
@@ -122,37 +117,35 @@ export default function AgreementsScreen() {
       {/* Results Count */}
       <View style={styles.resultsContainer}>
         <Text style={styles.resultsText}>
-          {filteredAgreements.length} accord{filteredAgreements.length > 1 ? 's' : ''} trouvé{filteredAgreements.length > 1 ? 's' : ''}
+          {filteredAgreements.length} accord(s) trouvé(s)
         </Text>
       </View>
 
       {/* Agreements List */}
-      <ScrollView 
-        style={styles.scrollView}
+      <ScrollView
+        style={styles.agreementsList}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[Colors.accent]}
-            tintColor={Colors.accent}
+            colors={[Colors.primary]}
+            tintColor={Colors.primary}
           />
         }
       >
-        {filteredAgreements.length > 0 ? (
-          <View style={styles.agreementsList}>
-            {filteredAgreements.map((agreement) => (
-              <AgreementCard key={agreement.id} agreement={agreement} />
-            ))}
-          </View>
-        ) : (
+        {filteredAgreements.length === 0 ? (
           <View style={styles.emptyState}>
             <FileText size={64} color={Colors.gray.medium} />
             <Text style={styles.emptyTitle}>Aucun accord trouvé</Text>
             <Text style={styles.emptyText}>
-              Essayez de modifier vos critères de recherche ou vos filtres.
+              Essayez de modifier vos critères de recherche
             </Text>
           </View>
+        ) : (
+          filteredAgreements.map((agreement) => (
+            <AgreementCard key={agreement.id} agreement={agreement} />
+          ))
         )}
       </ScrollView>
     </View>
@@ -166,21 +159,19 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 12,
-    backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.gray.light,
-  },
-  searchInputContainer: {
-    flex: 1,
-    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.gray.light,
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    backgroundColor: Colors.white,
+    margin: 16,
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    borderWidth: 2.5,
+    borderColor: Colors.gray.light,
+    elevation: 2,
+    shadowColor: Colors.shadow.color,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   searchIcon: {
     marginRight: 12,
@@ -193,118 +184,125 @@ const styles = StyleSheet.create({
   filterButton: {
     backgroundColor: Colors.accent,
     borderRadius: 20,
-    padding: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 48,
-    height: 48,
+    padding: 8,
+    marginLeft: 8,
   },
   resultsContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.gray.light,
+    marginBottom: 16,
   },
   resultsText: {
     fontSize: 14,
     color: Colors.gray.dark,
-    fontWeight: '500' as const,
-  },
-  scrollView: {
-    flex: 1,
+    fontWeight: '500',
   },
   agreementsList: {
-    padding: 16,
-    gap: 16,
+    flex: 1,
+    paddingHorizontal: 16,
   },
   agreementCard: {
     backgroundColor: Colors.white,
     borderRadius: 20,
     padding: 20,
-    borderWidth: 1,
-    borderColor: Colors.primary,
-    elevation: 3,
+    marginBottom: 16,
+    borderWidth: 2.5,
+    borderColor: Colors.gray.light,
+    elevation: 2,
     shadowColor: Colors.shadow.color,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Colors.shadow.opacity,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 12,
   },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold' as const,
+  countryInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  flagEmoji: {
+    fontSize: 24,
+    marginRight: 8,
+  },
+  countryName: {
+    fontSize: 16,
+    fontWeight: 'bold',
     color: Colors.primary,
-    marginBottom: 8,
   },
   statusBadge: {
-    alignSelf: 'flex-start',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 16,
+    borderRadius: 12,
   },
   statusText: {
     color: Colors.white,
     fontSize: 12,
-    fontWeight: 'bold' as const,
+    fontWeight: 'bold',
   },
-  cardContent: {
-    gap: 8,
+  agreementTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.primary,
     marginBottom: 16,
+    lineHeight: 24,
   },
-  cardRow: {
+  cardDetails: {
+    flexDirection: 'row',
+    marginBottom: 16,
+    gap: 20,
+  },
+  detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-  },
-  cardInfo: {
-    fontSize: 14,
-    color: Colors.gray.dark,
     flex: 1,
   },
+  detailText: {
+    fontSize: 14,
+    color: Colors.gray.dark,
+    marginLeft: 8,
+  },
   cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 16,
     borderTopWidth: 1,
     borderTopColor: Colors.gray.light,
-    paddingTop: 12,
-    gap: 12,
   },
-  partnersText: {
-    fontSize: 13,
-    color: Colors.gray.dark,
-    fontStyle: 'italic' as const,
+  dateInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  detailsButton: {
-    backgroundColor: Colors.primary,
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    alignSelf: 'flex-start',
+  dateText: {
+    fontSize: 12,
+    color: Colors.gray.medium,
+    marginLeft: 6,
   },
-  detailsButtonText: {
-    color: Colors.white,
-    fontSize: 14,
-    fontWeight: '600' as const,
+  partnersCount: {
+    fontSize: 12,
+    color: Colors.accent,
+    fontWeight: '600',
   },
   emptyState: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 64,
-    paddingHorizontal: 32,
+    paddingVertical: 60,
   },
   emptyTitle: {
     fontSize: 20,
-    fontWeight: 'bold' as const,
-    color: Colors.primary,
+    fontWeight: 'bold',
+    color: Colors.gray.dark,
     marginTop: 16,
     marginBottom: 8,
   },
   emptyText: {
-    fontSize: 16,
-    color: Colors.gray.dark,
+    fontSize: 14,
+    color: Colors.gray.medium,
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 20,
   },
 });

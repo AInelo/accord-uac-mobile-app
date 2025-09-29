@@ -1,9 +1,38 @@
-import { useState, useMemo, useCallback } from 'react';
-import createContextHook from '@nkzw/create-context-hook';
+import React, { createContext, useContext, useState, useMemo, useCallback, ReactNode } from 'react';
 import { Agreement, Partner, Statistics } from '@/constants/types';
 import { mockAgreements, mockPartners, mockStatistics } from '@/constants/mockData';
 
-export const [UACContext, useUAC] = createContextHook(() => {
+interface UACContextType {
+  agreements: Agreement[];
+  partners: Partner[];
+  statistics: Statistics;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  selectedFilters: {
+    types: string[];
+    domains: string[];
+    countries: string[];
+    status: string[];
+  };
+  setSelectedFilters: (filters: any) => void;
+  filteredAgreements: Agreement[];
+  getAgreementById: (id: string) => Agreement | undefined;
+  clearFilters: () => void;
+  updateFilter: (filterType: keyof {
+    types: string[];
+    domains: string[];
+    countries: string[];
+    status: string[];
+  }, value: string) => void;
+}
+
+const UACContext = createContext<UACContextType | undefined>(undefined);
+
+interface UACProviderProps {
+  children: ReactNode;
+}
+
+export function UACProvider({ children }: UACProviderProps) {
   const [agreements] = useState<Agreement[]>(mockAgreements);
   const [partners] = useState<Partner[]>(mockPartners);
   const [statistics] = useState<Statistics>(mockStatistics);
@@ -66,7 +95,7 @@ export const [UACContext, useUAC] = createContextHook(() => {
     }));
   }, []);
 
-  return useMemo(() => ({
+  const value = useMemo(() => ({
     agreements,
     partners,
     statistics,
@@ -79,4 +108,18 @@ export const [UACContext, useUAC] = createContextHook(() => {
     clearFilters,
     updateFilter,
   }), [agreements, partners, statistics, searchQuery, selectedFilters, filteredAgreements, getAgreementById, clearFilters, updateFilter]);
-});
+
+  return (
+    <UACContext.Provider value={value}>
+      {children}
+    </UACContext.Provider>
+  );
+}
+
+export function useUAC() {
+  const context = useContext(UACContext);
+  if (context === undefined) {
+    throw new Error('useUAC must be used within a UACProvider');
+  }
+  return context;
+}

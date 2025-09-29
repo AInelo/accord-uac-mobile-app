@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
-import { UACContext } from "@/contexts/UACContext";
+import { UACProvider } from "@/contexts/UACContext";
 import { Colors } from "@/constants/colors";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -27,9 +27,9 @@ function RootLayoutNav() {
         },
       }}
     >
-      <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen 
-        name="agreements" 
+        name="agreement" 
         options={{ 
           title: "Accords de Coopération",
           headerShown: true,
@@ -56,6 +56,13 @@ function RootLayoutNav() {
           headerShown: true,
         }} 
       />
+      <Stack.Screen 
+        name="statistics" 
+        options={{ 
+          title: "Statistiques",
+          headerShown: true,
+        }} 
+      />
     </Stack>
   );
 }
@@ -67,12 +74,12 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <UACContext>
+      <UACProvider>
         <GestureHandlerRootView style={styles.container}>
           <StatusBar style="light" />
           <RootLayoutNav />
         </GestureHandlerRootView>
-      </UACContext>
+      </UACProvider>
     </QueryClientProvider>
   );
 }
