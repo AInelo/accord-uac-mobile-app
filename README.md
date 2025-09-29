@@ -4,6 +4,12 @@
 
 UAC Accords est une application mobile développée avec React Native et Expo pour la gestion et la visualisation des accords de coopération de l'Université d'Abomey-Calavi (UAC). L'application permet de consulter, filtrer et analyser les accords de partenariat avec des institutions internationales.
 
+## 🎥 Démonstration
+
+**Vidéo de démonstration complète** : [totonlionel.com/accord-uac-app-video-demo](https://totonlionel.com/accord-uac-app-video-demo)
+
+Regardez cette vidéo pour voir toutes les fonctionnalités de l'application en action !
+
 ## ✨ Fonctionnalités
 
 - **🏠 Tableau de bord** : Vue d'ensemble des statistiques et accords récents

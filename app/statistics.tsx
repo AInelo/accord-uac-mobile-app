@@ -218,10 +218,12 @@ export default function StatisticsScreen() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Répartition par Domaine</Text>
             <View style={styles.chartContainer}>
-              <BarChart
+            <BarChart
                 data={barChartData}
                 width={width - 40}
                 height={220}
+                yAxisLabel=""
+                yAxisSuffix=""
                 chartConfig={{
                   backgroundColor: Colors.white,
                   backgroundGradientFrom: Colors.white,
