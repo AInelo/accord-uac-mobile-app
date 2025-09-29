@@ -147,24 +147,6 @@ accord-uac-mobile-app/
 └── tsconfig.json        # Configuration TypeScript
 ```
 
-Ce README.md est complet et couvre tous les aspects nécessaires pour installer et utiliser votre application UAC Accords. Il inclut :
-
-1. **Description claire** du projet
-2. **Fonctionnalités détaillées**
-3. **Technologies utilisées**
-4. **Prérequis** avec instructions d'installation
-5. **Guide d'installation** étape par étape
-6. **Instructions de test** sur mobile
-7. **Structure du projet**
-8. **Scripts disponibles**
-9. **Guide de personnalisation**
-10. **Résolution de problèmes**
-11. **Instructions de build**
-12. **Guide de contribution**
-13. **Informations de support**
-
-Le README est prêt à être utilisé et peut être personnalisé selon vos besoins spécifiques !
-
 ## 🔧 Scripts disponibles
 
 ```bash
@@ -307,16 +289,25 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ## 👥 Équipe
 
-- **Développement** : [Votre nom]
-- **Design** : [Nom du designer]
-- **Backend** : [Nom du développeur backend]
+- **Développement** : TOTON Lionel
+- **Design** : TOTON Lionel
+- **Backend** : TOTON Lionel
 
-## 📞 Support
+## 📞 Support & Contact
 
-Pour toute question ou problème :
-- 📧 Email : support@uac.bj
-- 🐛 Issues : [GitHub Issues](https://github.com/votre-username/accord-uac-mobile-app/issues)
-- 📖 Documentation : [Wiki du projet](https://github.com/votre-username/accord-uac-mobile-app/wiki)
+Pour toute question, suggestion ou problème :
+
+### 👨‍💻 Développeur Principal
+**TOTON Lionel**
+- 📧 **Email** : totonlionel@gmail.com
+- 📱 **WhatsApp** : +229 01 96 76 97 16
+- 🐛 **Issues** : [GitHub Issues](https://github.com/votre-username/accord-uac-mobile-app/issues)
+- 📖 **Documentation** : [Wiki du projet](https://github.com/votre-username/accord-uac-mobile-app/wiki)
+
+### 🏫 Institution
+**Université d'Abomey-Calavi (UAC)**
+- 🌐 **Site web** : [www.uac.bj](https://www.uac.bj)
+- 📧 **Email institutionnel** : contact@uac.bj
 
 ## 🔄 Changelog
 
@@ -330,4 +321,6 @@ Pour toute question ou problème :
 
 ---
 
-**Développé avec ❤️ pour l'Université d'Abomey-Calavi**
+**Développé avec ❤️ par TOTON Lionel pour l'Université d'Abomey-Calavi**
+
+*Pour toute question technique ou commerciale, n'hésitez pas à me contacter directement via email ou WhatsApp.*
